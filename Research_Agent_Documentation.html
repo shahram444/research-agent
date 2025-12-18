@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Research Agent - Technical Documentation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            line-height: 1.6;
+            color: #333;
+        }
+        h1 {
+            color: #1a5276;
+            text-align: center;
+            border-bottom: 3px solid #1a5276;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #1a5276;
+            margin-top: 40px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 5px;
+        }
+        h3 {
+            color: #2874a6;
+            margin-top: 25px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+        .flowbox {
+            background: #e8f4f8;
+            border: 1px solid #999;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .flowbox-header {
+            background: #1a5276;
+            color: white;
+            border: 1px solid #1a5276;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .arrow {
+            text-align: center;
+            font-size: 24px;
+            color: #1a5276;
+            margin: 5px 0;
+        }
+        .verification-header {
+            text-align: center;
+            color: #c0392b;
+            font-weight: bold;
+            font-size: 20px;
+            margin: 20px 0;
+            padding: 10px;
+            border: 2px dashed #c0392b;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th {
+            background: #1a5276;
+            color: white;
+            padding: 10px;
+            border: 1px solid #999;
+        }
+        td {
+            padding: 10px;
+            border: 1px solid #999;
+        }
+        tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+        .highlight {
+            background: #d5f5e3;
+        }
+        .warning {
+            background: #fcf3cf;
+        }
+        .danger {
+            background: #fadbd8;
+        }
+        ul {
+            margin: 10px 0;
+        }
+        li {
+            margin: 5px 0;
+        }
+        .summary-box {
+            background: #e8f4f8;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #1a5276;
+            margin: 30px 0;
+            border-radius: 5px;
+        }
+        .page-break {
+            page-break-after: always;
+        }
+        @media print {
+            .page-break {
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<h1>Research Agent</h1>
+<p class="subtitle">AI-Powered Academic Paper Tool<br>Technical Documentation - How It Works</p>
+
+<h2>Overview</h2>
+<p>Research Agent is a desktop application that helps researchers work with academic papers. It uses AI (Claude or ChatGPT) to automate time-consuming research tasks while keeping the human in control.</p>
+
+<h3>Four Main Features:</h3>
+<ul>
+    <li><strong>Paper Finder</strong> - Search for papers online using AI web search</li>
+    <li><strong>PDF Analyzer</strong> - Ask questions about your local PDF collection</li>
+    <li><strong>Citation Verifier</strong> - Check if citations support your claims</li>
+    <li><strong>Data Extractor</strong> - Extract and verify specific data for meta-analysis</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ==================== PAPER FINDER ==================== -->
+<h2>1. Paper Finder</h2>
+
+<h3>What it does:</h3>
+<p>Searches the internet for academic papers matching your query. AI analyzes your search terms, finds relevant papers from academic sources, filters out loosely related results, and returns detailed information including titles, authors, summaries, and links.</p>
+
+<h3>Flowchart:</h3>
+
+<div class="flowbox-header">USER ENTERS SEARCH QUERY</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI ANALYZES QUERY</strong><br>
+    Identifies: method, topic, scale, keywords<br>
+    Understands what specific papers user needs
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>CLAUDE WEB SEARCH (API)</strong><br>
+    Searches the web for academic papers<br>
+    Google Scholar, arXiv, PubMed,<br>
+    Semantic Scholar, publisher sites, repositories<br>
+    
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI FILTERS RESULTS</strong><br>
+    Removes loosely related papers<br>
+    Keeps only EXACT matches to query<br>
+    Prioritizes papers that DID the thing (not just mention it)<br>
+    Ranks by relevance
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>FORMAT OUTPUT (10-15 papers)</strong><br>
+    Title, Authors, Year, Journal<br>
+    Summary of what paper actually did<br>
+    How it matches your query<br>
+    Key data/results, DOI/URL link
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>DISPLAY TO USER</strong><br>
+    Save to History | Export to Word/PDF/TXT | Save to Favorites
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== PDF ANALYZER ==================== -->
+<h2>2. PDF Analyzer</h2>
+
+<h3>What it does:</h3>
+<p>Reads your local PDF papers and answers any question about them. You select a folder of PDFs, ask a question, and AI reads through all papers to find relevant information, citing which paper said what.</p>
+
+<h3>Flowchart:</h3>
+
+<div class="flowbox-header">USER SELECTS FOLDER</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>SCAN FOLDER FOR PDFs</strong><br>
+    Finds all .pdf files (includes subfolders)<br>
+    Gets metadata: title, author, page count
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>LOAD PDFs (up to 10 papers)</strong><br>
+    Shows list of loaded papers with page counts
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox-header">USER ASKS QUESTION</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>EXTRACT TEXT FROM PDFs</strong><br>
+    Using PyMuPDF library<br>
+    Reads each PDF page by page<br>
+    Up to 30 pages per paper<br>
+    Truncates if too long (50,000 chars max)
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>SEND TO AI (Claude or ChatGPT)</strong><br>
+    Package includes: all paper texts with filenames,<br>
+    user's question, instructions to cite sources
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI ANALYZES ALL PAPERS</strong><br>
+    Reads through all text<br>
+    Finds relevant information<br>
+    Identifies which paper says what<br>
+    Extracts specific data/values<br>
+    Compares findings across papers
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>FORMAT ANSWER WITH CITATIONS</strong><br>
+    Answers the question directly<br>
+    Cites specific papers (filename)<br>
+    Includes quotes and data from papers
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>DISPLAY TO USER</strong><br>
+    Save to History | Export to Word/PDF/TXT | Save to Favorites
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== CITATION VERIFIER ==================== -->
+<h2>3. Citation Verifier</h2>
+
+<h3>What it does:</h3>
+<p>Checks if your citations actually support your claims. You paste a paragraph from your writing, load the cited papers, and AI compares your claims against what the papers actually say. Returns verdict: SUPPORTED, PARTIALLY SUPPORTED, or NOT SUPPORTED.</p>
+
+<h3>Flowchart:</h3>
+
+<div class="flowbox-header">USER PASTES PARAGRAPH WITH CITATIONS</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>USER LOADS CITED PAPERS</strong><br>
+    (From PDF Analyzer tab)<br>
+    Example: Smith2022.pdf, Johnson2021.pdf
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>EXTRACT TEXT FROM ALL PDFs</strong><br>
+    Reads each cited paper fully<br>
+    Prepares text for analysis
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI IDENTIFIES CLAIMS</strong><br>
+    From user's paragraph, finds:<br>
+    - Specific claims made<br>
+    - Values/data cited<br>
+    - Which paper is attributed to each claim
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI SEARCHES PAPERS FOR EVIDENCE</strong><br>
+    For each claim:<br>
+    - Searches cited PDF for relevant keywords<br>
+    - Looks for supporting quotes<br>
+    - Finds matching values/data
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI COMPARES CLAIMS vs EVIDENCE</strong><br>
+    Does paper actually say this?<br>
+    Is the context correct?<br>
+    Any contradictions or missing nuance?
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>GENERATE VERDICT</strong><br>
+    <span class="highlight">SUPPORTED</span> - Paper says exactly this<br>
+    <span class="warning">PARTIALLY SUPPORTED</span> - Similar but not exact<br>
+    <span class="danger">NOT SUPPORTED</span> - Paper doesn't support this claim
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>FORMAT VERIFICATION REPORT</strong><br>
+    1. Overall verdict<br>
+    2. Claim-by-claim analysis with evidence quotes<br>
+    3. Recommendations for improvement
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>DISPLAY TO USER</strong><br>
+    Export Report to PDF | Save to Favorites
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== DATA EXTRACTOR ==================== -->
+<h2>4. Data Extractor (with Human Verification)</h2>
+
+<h3>What it does:</h3>
+<p>Extracts specific data from multiple papers for meta-analysis. You define what data you need (e.g., "oxygen penetration depths"), AI scans all papers and extracts values with their context. <strong>Critically, every extracted data point includes the exact quote and page number, and YOU verify each item before it goes into the final table.</strong> This ensures 100% human-verified data for your meta-analysis.</p>
+
+<h3>Key Capabilities:</h3>
+<ul>
+    <li>Extract numerical values, ranges, and conditions from text</li>
+    <li>Read and extract data from tables within PDFs</li>
+    <li>Extract data from figures (if text labels present)</li>
+    <li>Capture units, methods, sample types, and experimental conditions</li>
+    <li>Provide exact quotes and page numbers for verification</li>
+    <li>Human approval required for each data point</li>
+</ul>
+
+<h3>Flowchart:</h3>
+
+<div class="flowbox-header">USER DEFINES WHAT DATA TO EXTRACT</div>
+<p style="text-align:center; color:#666; font-style:italic;">Examples: "Extract all Damköhler numbers" | "Find oxygen penetration depths" | "Get permeability values with methods"</p>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>USER SELECTS PAPERS FOLDER</strong><br>
+    Can load 10, 20, 50+ papers for extraction
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>EXTRACT TEXT FROM ALL PDFs</strong><br>
+    Using PyMuPDF library<br>
+    Reads full text including tables<br>
+    Preserves table structure where possible
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI SCANS EACH PAPER</strong><br>
+    For each paper, AI finds:<br>
+    - Target values (numbers, ranges)<br>
+    - Units of measurement<br>
+    - Experimental conditions (T, P, pH, etc.)<br>
+    - Method used (experimental, model, etc.)<br>
+    - Sample type / material<br>
+    - PAGE NUMBER where found<br>
+    - EXACT QUOTE from paper
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>AI STRUCTURES DATA INTO TABLE</strong><br>
+    Each row includes: Paper, Value, Unit, Method,<br>
+    Conditions, Page, Exact Quote, Confidence Score
+</div>
+<div class="arrow">↓</div>
+
+<div class="verification-header">*** VERIFICATION STEP ***</div>
+
+<div class="flowbox">
+    <strong>CONFIDENCE SCORING</strong><br>
+    <span class="highlight">HIGH</span> - Exact number clearly stated<br>
+    <span class="warning">MEDIUM</span> - Range or approximate value<br>
+    <span class="danger">LOW</span> - Inferred or unclear context
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>USER REVIEWS EACH EXTRACTED DATA POINT</strong><br><br>
+    For each row, user sees:<br>
+    - Extracted value and units<br>
+    - Page number in PDF<br>
+    - Exact quote AI extracted from<br>
+    - Confidence score<br><br>
+    <strong>User actions:</strong><br>
+    [✓ APPROVE] - Data is correct, keep it<br>
+    [✎ EDIT] - Fix value/unit/condition manually<br>
+    [✗ REJECT] - Wrong data, remove from table<br>
+    [📄 OPEN PDF] - Opens PDF at that page to verify
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>FINAL VERIFIED TABLE</strong><br>
+    Only APPROVED data included<br>
+    Each row has been human-verified<br>
+    Status column: VERIFIED / EDITED / REJECTED
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>SORT AND FILTER</strong><br>
+    Sort by: value, year, method, author, confidence<br>
+    Filter by: verified only, high confidence, method type<br>
+    Group by: any column
+</div>
+<div class="arrow">↓</div>
+
+<div class="flowbox">
+    <strong>EXPORT OPTIONS</strong><br>
+    Excel (.xlsx) - for further analysis<br>
+    CSV (.csv) - for any software<br>
+    Word table (.docx) - for papers/reports<br>
+    LaTeX table - for academic papers<br>
+    Includes note: "All data human-verified"
+</div>
+
+<div class="page-break"></div>
+
+<!-- ==================== DATA EXTRACTOR DETAILS ==================== -->
+<h3>What AI Can Extract:</h3>
+
+<table>
+    <tr>
+        <th>Data Type</th>
+        <th>Examples</th>
+    </tr>
+    <tr>
+        <td>Numerical values</td>
+        <td>2.5 mm, 0.001 mol/L, 25°C, 10⁻¹² m²</td>
+    </tr>
+    <tr>
+        <td>Ranges</td>
+        <td>1.5-3.2 mm, 10-100 μM, 5±0.5 cm</td>
+    </tr>
+    <tr>
+        <td>Conditions</td>
+        <td>Temperature, pressure, pH, salinity, depth</td>
+    </tr>
+    <tr>
+        <td>Methods</td>
+        <td>Experimental, numerical model, field measurement</td>
+    </tr>
+    <tr>
+        <td>Materials</td>
+        <td>Marine sediment, soil, sandstone, biofilm</td>
+    </tr>
+    <tr>
+        <td>Table data</td>
+        <td>Values from tables within PDFs</td>
+    </tr>
+    <tr>
+        <td>Figure labels</td>
+        <td>Text annotations and axis values from figures</td>
+    </tr>
+</table>
+
+<h3>Verification Features:</h3>
+
+<table>
+    <tr>
+        <th>Feature</th>
+        <th>What It Does</th>
+        <th>Why It Helps</th>
+    </tr>
+    <tr>
+        <td><strong>Confidence Score</strong></td>
+        <td>HIGH / MEDIUM / LOW rating</td>
+        <td>Know which data to check first</td>
+    </tr>
+    <tr>
+        <td><strong>Exact Quote</strong></td>
+        <td>Shows original text from paper</td>
+        <td>Compare AI vs actual text</td>
+    </tr>
+    <tr>
+        <td><strong>Page Number</strong></td>
+        <td>Where in PDF data was found</td>
+        <td>Jump directly to verify</td>
+    </tr>
+    <tr>
+        <td><strong>Open PDF Button</strong></td>
+        <td>Opens PDF at exact page</td>
+        <td>One-click verification</td>
+    </tr>
+    <tr>
+        <td><strong>Approve/Edit/Reject</strong></td>
+        <td>User controls each data point</td>
+        <td>Nothing without your OK</td>
+    </tr>
+    <tr>
+        <td><strong>Status Column</strong></td>
+        <td>VERIFIED / EDITED / AI-ONLY</td>
+        <td>Know what's been checked</td>
+    </tr>
+</table>
+
+<h3>Example Output Table:</h3>
+
+<table>
+    <tr>
+        <th>Paper</th>
+        <th>Value</th>
+        <th>Unit</th>
+        <th>Page</th>
+        <th>Quote</th>
+        <th>Confidence</th>
+        <th>Status</th>
+    </tr>
+    <tr>
+        <td>Smith2022</td>
+        <td>2.5</td>
+        <td>mm</td>
+        <td>12</td>
+        <td><em>"depth of 2.5 mm was..."</em></td>
+        <td class="highlight">HIGH</td>
+        <td class="highlight">VERIFIED</td>
+    </tr>
+    <tr>
+        <td>Lee2023</td>
+        <td>1.8</td>
+        <td>mm</td>
+        <td>8</td>
+        <td><em>"ranged from 1.5-2.1..."</em></td>
+        <td class="warning">MEDIUM</td>
+        <td style="background:#d6eaf8">EDITED</td>
+    </tr>
+    <tr>
+        <td>Kim2021</td>
+        <td>0.9</td>
+        <td>mm</td>
+        <td>15</td>
+        <td><em>"approximately 1 mm..."</em></td>
+        <td class="danger">LOW</td>
+        <td class="danger">REJECTED</td>
+    </tr>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ==================== SUMMARY ==================== -->
+<h2>Summary</h2>
+
+<table>
+    <tr>
+        <th>Feature</th>
+        <th>Data Source</th>
+        <th>AI Does</th>
+        <th>Human Role</th>
+    </tr>
+    <tr>
+        <td><strong>Paper Finder</strong></td>
+        <td>Web (Claude decides)</td>
+        <td>Search + Filter + Summarize</td>
+        <td>Define query</td>
+    </tr>
+    <tr>
+        <td><strong>PDF Analyzer</strong></td>
+        <td>Your local PDFs</td>
+        <td>Read + Answer + Cite</td>
+        <td>Ask questions</td>
+    </tr>
+    <tr>
+        <td><strong>Citation Verifier</strong></td>
+        <td>Your local PDFs</td>
+        <td>Compare claims vs papers</td>
+        <td>Provide paragraph</td>
+    </tr>
+    <tr>
+        <td><strong>Data Extractor</strong></td>
+        <td>Your local PDFs</td>
+        <td>Extract + Structure data</td>
+        <td class="highlight"><strong>VERIFY each item</strong></td>
+    </tr>
+</table>
+
+<div class="summary-box">
+    AI does the heavy lifting — YOU make the final decisions
+</div>
+
+<p style="text-align:center; color:#666; font-style:italic; margin-top:50px;">
+    Research Agent - AI-Powered Academic Paper Tool<br>
+    All data extraction features include human verification
+</p>
+
+</body>
+</html>
